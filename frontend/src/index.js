@@ -11,8 +11,9 @@ import { persistStore } from 'redux-persist';
 let persistor = persistStore(store);
 
 
+export const BASE_URL="http://localhost:8080";
 
-export const BASE_URL="https://mernchat-app-pr7h.onrender.com";
+// export const BASE_URL="https://mernchat-app-pr7h.onrender.com";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -18,6 +18,11 @@ const userModel = new mongoose.Schema({
         type:String,
         default:""
     },
+    profilePhotoType: {
+        type: String,
+        enum: ["avatar", "custom"],
+        default: "avatar"
+    },
     gender:{
         type:String,
         enum:["male", "female"],

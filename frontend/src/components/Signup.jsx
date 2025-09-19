@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BASE_URL } from '..';
+import ImageUpload from './ImageUpload';
 
 
 const Signup = () => {
@@ -11,8 +12,10 @@ const Signup = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "",
+    gender: "male",  // Set a default gender
+    profilePhotoType: "avatar",
   });
+  const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
   const handleCheckbox = (gender) => {
     setUser({ ...user, gender });
@@ -20,27 +23,58 @@ const Signup = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${BASE_URL}/api/v1/user/register`, user, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        withCredentials: true
-      });
-      if (res.data.success) {
-        navigate("/login");
-        toast.success(res.data.message);
+      // Validate required fields
+      if (!user.fullName || !user.username || !user.password || !user.confirmPassword || !user.gender) {
+        toast.error('Please fill in all required fields');
+        return;
+      }
+
+      // Validate password match
+      if (user.password !== user.confirmPassword) {
+        toast.error('Passwords do not match');
+        return;
+      }
+
+      // Create form data
+      const formData = new FormData();
+      Object.keys(user).forEach(key => formData.append(key, user[key]));
+      if (profileImage) {
+        formData.append('profileImage', profileImage);
+      }
+
+      // Make API request
+      try {
+        const res = await axios.post(`${BASE_URL}/api/v1/user/register`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          withCredentials: true
+        });
+
+        if (res && res.data && res.data.success) {
+          toast.success(res.data.message || 'Registration successful!');
+          navigate("/login");
+        } else {
+          throw new Error(res.data?.message || 'Registration failed');
+        }
+      } catch (apiError) {
+        const errorMessage = apiError.response?.data?.message || apiError.message || 'Registration failed';
+        toast.error(errorMessage);
+        console.error('Registration error:', apiError);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.log(error);
+      toast.error('An unexpected error occurred');
+      console.error('Form submission error:', error);
     }
     setUser({
       fullName: "",
       username: "",
       password: "",
       confirmPassword: "",
-      gender: "",
+      gender: "male",
+      profilePhotoType: "avatar"
     })
+    setProfileImage(null)
   }
   return (
     <div className="min-w-96 mx-auto text-white">
@@ -91,23 +125,32 @@ const Signup = () => {
               type="password"
               placeholder='Confirm Password' />
           </div>
+          <div className="my-4">
+            <label className='label p-2'>
+              <span className='text-base text-white label-text'>Profile Picture</span>
+            </label>
+            <ImageUpload
+              onImageSelect={setProfileImage}
+              onTypeChange={(type) => setUser({ ...user, profilePhotoType: type })}
+            />
+          </div>
           <div className='flex items-center my-4'>
             <div className='flex items-center'>
               <p>Male</p>
               <input
-                type="checkbox"
+                type="radio"
+                name="gender"
                 checked={user.gender === "male"}
                 onChange={() => handleCheckbox("male")}
-                defaultChecked
-                className="checkbox border-white  mx-2" />
+                className="radio border-white mx-2" />
             </div>
             <div className='flex items-center'>
               <p>Female</p>
               <input
-                type="checkbox"
+                type="radio"
+                name="gender"
                 checked={user.gender === "female"}
                 onChange={() => handleCheckbox("female")}
-                defaultChecked
                 className="checkbox border-white mx-2" />
             </div>
           </div>

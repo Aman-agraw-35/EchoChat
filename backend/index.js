@@ -9,9 +9,11 @@ import { app, server } from "./socket/socket.js";
 import path from "path" ;
 app.use(express.json()); 
 app.use(cookieParser());
-const corsOption={
-    origin:'https://mernchat-app-pr7h.onrender.com',
-    credentials:true
+const corsOption = {
+    origin: ['http://localhost:3000', 'https://mernchat-app-pr7h.onrender.com'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 app.use(cors(corsOption)); 
 	   

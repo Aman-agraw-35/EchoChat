@@ -33,8 +33,9 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoredPaths: ['socket'], // Ignore socket paths
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, 'socket/setSocket'],
+        ignoredActionPaths: ['payload.socket', 'socket.socket'],
+        ignoredPaths: ['socket.socket'],
       },
     }),
 });
