@@ -34,7 +34,7 @@ const ImageUpload = ({ onImageSelect, onTypeChange }) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-4 ">
                 <button
                     type="button"
                     onClick={handleAvatarSelect}
@@ -59,7 +59,7 @@ const ImageUpload = ({ onImageSelect, onTypeChange }) => {
                         <img
                             src={preview}
                             alt="Preview"
-                            className="w-24 h-24 rounded-full object-cover mb-2"
+                            className="w-10 h-10 rounded-full object-cover mb-2"
                         />
                         <p className="text-sm text-gray-600">Click or drag to change</p>
                     </div>

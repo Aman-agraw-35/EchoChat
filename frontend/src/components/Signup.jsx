@@ -77,12 +77,12 @@ const Signup = () => {
     setProfileImage(null)
   }
   return (
-    <div className="min-w-96 mx-auto text-white">
-      <div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100'>
+    <div className="sm:min-w-96 mx-auto max-h-full text-white">
+      <div className='w-full p-3 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100'>
         <h1 className='text-3xl text-white  font-bold text-center'>Signup</h1>
         <form onSubmit={onSubmitHandler} action="">
           <div>
-            <label className='label p-2'>
+            <label className='label px-2'>
               <span className='text-base text-white label-text'>Full Name</span>
             </label>
             <input
@@ -93,7 +93,7 @@ const Signup = () => {
               placeholder='Full Name' />
           </div>
           <div>
-            <label className='label p-2'>
+            <label className='label px-2'>
               <span className='text-base text-white label-text'>Username</span>
             </label>
             <input
@@ -104,7 +104,7 @@ const Signup = () => {
               placeholder='Username' />
           </div>
           <div>
-            <label className='label p-2'>
+            <label className='label px-2'>
               <span className='text-base text-white label-text'>Password</span>
             </label>
             <input
@@ -115,7 +115,7 @@ const Signup = () => {
               placeholder='Password' />
           </div>
           <div>
-            <label className='label p-2'>
+            <label className='label px-2'>
               <span className='text-base text-white  label-text'>Confirm Password</span>
             </label>
             <input
@@ -125,8 +125,8 @@ const Signup = () => {
               type="password"
               placeholder='Confirm Password' />
           </div>
-          <div className="my-4">
-            <label className='label p-2'>
+          <div className="">
+            <label className='label px-2'>
               <span className='text-base text-white label-text'>Profile Picture</span>
             </label>
             <ImageUpload
@@ -134,7 +134,7 @@ const Signup = () => {
               onTypeChange={(type) => setUser({ ...user, profilePhotoType: type })}
             />
           </div>
-          <div className='flex items-center my-4'>
+          <div className='flex items-center my-2'>
             <div className='flex items-center'>
               <p>Male</p>
               <input
@@ -154,9 +154,9 @@ const Signup = () => {
                 className="checkbox border-white mx-2" />
             </div>
           </div>
-          <p className='text-center my-2'>Already have an account? <Link to="/login"> login </Link></p>
+          <p className='text-center'>Already have an account? <Link to="/login"> login </Link></p>
           <div>
-            <button type='submit' className='btn btn-block btn-sm mt-2 border border-slate-700'>Register</button>
+            <button type='submit' className='btn btn-block btn-sm mt-1 border border-slate-700'>Register</button>
           </div>
         </form>
       </div>

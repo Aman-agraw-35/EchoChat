@@ -4,15 +4,25 @@ import { MdOutlineDelete } from "react-icons/md";
 import axios from "axios";
 import { setMessages } from "../redux/messageSlice";
 import { BASE_URL } from '..';
-import { io } from "socket.io-client";
+
+const PREVIEW_LENGTH = 280;
 
 const Message = ({ message }) => {
-    const { socket } = useSelector(store => store.socket);
     const { authUser, selectedUser } = useSelector(store => store.user);
     const { messages } = useSelector(store => store.message);
     const dispatch = useDispatch();
     const scroll = useRef();
+    const messageRef = useRef();
     const [isDeleted, setIsDeleted] = useState(false);
+    const [showAll, setShowAll] = useState(false);
+
+    useEffect(() => {
+        if (message?.message?.length > PREVIEW_LENGTH) {
+            setShowAll(false);
+        }
+        scroll.current?.scrollIntoView({ behavior: "smooth" });
+    }, [message]);
+
     const shakeClass = message.shouldShake ? "shake" : "";
 
     const formatTimestampToIST = (timestamp) => {
@@ -23,10 +33,6 @@ const Message = ({ message }) => {
         const formattedTime = istDate.toISOString().substring(11, 19);
         return `${formattedDate} ${formattedTime}`;
     };
-
-    useEffect(() => {
-        scroll.current?.scrollIntoView({ behavior: "smooth" });
-    }, [message]);
 
     const handleDelete = async (messId) => {
         try {
@@ -47,6 +53,14 @@ const Message = ({ message }) => {
         return null;
     }
 
+    const renderMessageText = () => {
+        const text = message?.message || '';
+        if (!showAll && text.length > PREVIEW_LENGTH) {
+            return text.slice(0, PREVIEW_LENGTH) + '...';
+        }
+        return text;
+    }
+
     return (
         <div ref={scroll} className={`chat ${message?.senderId === authUser?._id ? 'chat-end' : 'chat-start'}`}>
             <div className="chat-image avatar">
@@ -54,21 +68,34 @@ const Message = ({ message }) => {
                     <img alt="User Avatar" src={message?.senderId === authUser?._id ? authUser?.profilePhoto : selectedUser?.profilePhoto} />
                 </div>
             </div>
-            <div className="chat-header">
-            {shakeClass && <h1 className="text-xs opacity-50 text-white">new message</h1>}
-                <time className="text-xs opacity-50 text-white ">{formatTimestampToIST(message?.updatedAt)}</time>
-            </div>
-            {isDeleted ? (
-                <div className="chat-bubble bg-gray-300 text-black">
-                    This message was deleted for yourself
+            <div className="chat-body">
+                <div className="chat-header">
+                    {shakeClass && <span className="text-xs opacity-50 text-white">new message</span>}
+                    <time className="text-xs opacity-50 text-white">{formatTimestampToIST(message?.updatedAt)}</time>
                 </div>
-            ) : (
-                <div className={`chat-bubble ${shakeClass} ${message?.senderId !== authUser?._id ? 'bg-gray-200 text-black' : ''}`}>
-                    {message?.message}
-                </div>
-            )}
-            <div onClick={() => handleDelete(message?._id)}>
-                <MdOutlineDelete className="text-white cursor-pointer  " />
+
+                {isDeleted ? (
+                    <div className="chat-bubble bg-gray-300 text-black">
+                        This message was deleted for yourself
+                    </div>
+                ) : (
+                    <>
+                        <div className={`chat-bubble  ${shakeClass} ${message?.senderId !== authUser?._id ? 'bg-gray-200 rounded-bl-none text-black' : ''}`}>
+                            <div ref={messageRef} className="message-text">{renderMessageText()}</div>
+                            {message?.message && message.message.length > PREVIEW_LENGTH && (
+                                <button 
+                                    onClick={() => setShowAll(prev => !prev)} 
+                                    className="text-xs mt-1 underline text-blue-200 block"
+                                >
+                                    {showAll ? 'Show less' : 'Show more'}
+                                </button>
+                            )}
+                        </div>
+                        <div className="delete-icon mt-1">
+                            <MdOutlineDelete className="text-white cursor-pointer" onClick={() => handleDelete(message?._id)} />
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );

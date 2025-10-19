@@ -2,6 +2,88 @@
   text-align: center;
 }
 
+/* Message bubble sizing and wrapping */
+.chat {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin: 1rem 0;
+}
+
+.chat .chat-image {
+  flex: 0 0 auto;
+}
+
+.chat .chat-bubble {
+  max-width: 400px;
+  min-width: 80px;
+  word-break: break-word;
+  white-space: pre-line;
+  padding: 8px 16px;
+  border-radius: 12px;
+ 
+
+}
+
+.chat-start {
+  flex-direction: row;
+  
+}
+
+.chat-end {
+  flex-direction: row-reverse;
+}
+
+.chat-start .chat-bubble {
+  margin-right: auto;
+  text-align: left;
+   border-bottom-left-radius: 0px;
+}
+
+.chat-end .chat-bubble {
+  margin-left: auto;
+  text-align: left;
+     border-bottom-right-radius: 0px;
+
+}
+
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: calc(100% - 60px);
+}
+
+.chat-header {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.delete-icon {
+  display: flex;
+  margin-top: 4px;
+}
+
+.chat-start .delete-icon {
+  justify-content: flex-start;
+}
+
+.chat-end .delete-icon {
+  justify-content: flex-end;
+}
+
+@media (max-width: 700px) {
+  .chat .chat-bubble {
+    max-width: 300px;
+    min-width: 60px;
+    padding: 6px 12px;
+  }
+  
+  .chat-body {
+    max-width: calc(100% - 40px);
+  }
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -22,7 +104,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
+}f
 
 .App-link {
   color: #61dafb;

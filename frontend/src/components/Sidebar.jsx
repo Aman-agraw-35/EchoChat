@@ -29,21 +29,40 @@ const Sidebar = () => {
             console.log(error);
         }
     }
+    const fetchUsers = async () => {
+        try {
+            axios.defaults.withCredentials = true;
+            const res = await axios.get(`${BASE_URL}/api/v1/user`);
+            dispatch(setOtherUsers(res.data));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const searchSubmitHandler = (e) => {
         e.preventDefault();
-        const conversationUser = otherUsers?.find((user)=> user.fullName.toLowerCase().includes(search.toLowerCase()));
-        if(conversationUser){
-            dispatch(setOtherUsers([conversationUser]));
-        }else{
+        const q = (search || "").trim().toLowerCase();
+        if (!q) {
+            fetchUsers();
+            return;
+        }
+        const matched = otherUsers?.filter((user) => user.fullName.toLowerCase().includes(q));
+        if (matched && matched.length > 0) {
+            dispatch(setOtherUsers(matched));
+        } else {
             toast.error("User not found!");
         }
     }
     return (
         <div className='border-r md:h-auto h-[40vh] border-slate-500 md:p-4 flex flex-col  md:w-auto w-[100%] '>
-            <form onSubmit={searchSubmitHandler} action="" className='flex items-center md:gap-2  gap-4 justify-center  '>
+            <form onSubmit={searchSubmitHandler} action="" className='flex items-center md:gap-2   justify-center  '>
                 <input
                     value={search}
-                    onChange={(e)=>setSearch(e.target.value)}
+                    onChange={(e)=>{
+                        const v = e.target.value;
+                        setSearch(v);
+                        if (v.trim() === '') fetchUsers();
+                    }}
                     className='input input-bordered  rounded-none md:rounded-md w-full' type="text"
                     placeholder='Search...'
                 />
