@@ -85,7 +85,7 @@ const Message = ({ message }) => {
                             {message?.message && message.message.length > PREVIEW_LENGTH && (
                                 <button 
                                     onClick={() => setShowAll(prev => !prev)} 
-                                    className="text-xs mt-1 underline text-blue-200 block"
+                                    className="text-xs mt-1 underline text-blue-500 block"
                                 >
                                     {showAll ? 'Show less' : 'Show more'}
                                 </button>
