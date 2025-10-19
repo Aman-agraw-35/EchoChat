@@ -5,7 +5,7 @@ import axios from "axios";
 import { setMessages } from "../redux/messageSlice";
 import { BASE_URL } from '..';
 
-const PREVIEW_LENGTH = 280;
+const PREVIEW_LENGTH = 150;
 
 const Message = ({ message }) => {
     const { authUser, selectedUser } = useSelector(store => store.user);
@@ -80,8 +80,8 @@ const Message = ({ message }) => {
                     </div>
                 ) : (
                     <>
-                        <div className={`chat-bubble  ${shakeClass} ${message?.senderId !== authUser?._id ? 'bg-gray-200 rounded-bl-none text-black' : ''}`}>
-                            <div ref={messageRef} className="message-text">{renderMessageText()}</div>
+                        <div className={`chat-bubble ${shakeClass} ${message?.senderId !== authUser?._id ? 'bg-gray-200 text-black' : ''}`}>
+                            <div ref={messageRef} className="message-text break-words">{renderMessageText()}</div>
                             {message?.message && message.message.length > PREVIEW_LENGTH && (
                                 <button 
                                     onClick={() => setShowAll(prev => !prev)} 

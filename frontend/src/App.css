@@ -15,19 +15,18 @@
 }
 
 .chat .chat-bubble {
-  max-width: 400px;
-  min-width: 80px;
+  max-width: 320px;
+  width: max-content;
   word-break: break-word;
-  white-space: pre-line;
+  white-space: normal;
   padding: 8px 16px;
   border-radius: 12px;
- 
-
+  display: inline-block;
+  overflow-wrap: break-word;
 }
 
 .chat-start {
   flex-direction: row;
-  
 }
 
 .chat-end {
@@ -37,14 +36,15 @@
 .chat-start .chat-bubble {
   margin-right: auto;
   text-align: left;
-   border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  min-width: 40px;
 }
 
 .chat-end .chat-bubble {
   margin-left: auto;
   text-align: left;
-     border-bottom-right-radius: 0px;
-
+  border-bottom-right-radius: 0px;
+  min-width: 40px;
 }
 
 .chat-body {
@@ -74,13 +74,13 @@
 
 @media (max-width: 700px) {
   .chat .chat-bubble {
-    max-width: 300px;
-    min-width: 60px;
+    max-width: 240px;
+    width: max-content;
     padding: 6px 12px;
   }
   
   .chat-body {
-    max-width: calc(100% - 40px);
+    max-width: calc(100% - 48px);
   }
 }
 
